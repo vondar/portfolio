@@ -26,6 +26,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
             <span>Signals &amp; Systems</span>
           </Link>
           <nav aria-label="Primary navigation">
+            <Link href="/#about">About</Link>
             <Link href="/#work">Work</Link>
             <a href={apiUrl}>API</a>
           </nav>

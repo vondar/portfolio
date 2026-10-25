@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { getProjects } from "@/lib/projects";
+import { profile } from "@/lib/profile";
 
 
 export const revalidate = 300;
@@ -13,16 +14,73 @@ export default async function Home() {
     <>
       <section className="hero">
         <div className="hero-copy">
-          <p className="eyebrow">Data product portfolio · 2026</p>
+          <p className="eyebrow">{profile.name} · Data product portfolio</p>
           <h1>Find the system<br />beneath the signal.</h1>
           <p className="hero-lead">
-            Four investigations into what scores, spending, rankings, and songs reveal when the underlying data is made legible.
+            I&apos;m a fullstack engineer working across Python, React, and data systems. These are four investigations into what scores, spending, rankings, and songs reveal when the underlying data is made legible.
           </p>
         </div>
         <div className="hero-index" aria-label="Portfolio summary">
           <div><strong>04</strong><span>Projects</span></div>
           <div><strong>28.3 MB</strong><span>Source data</span></div>
           <div><strong>03</strong><span>Services</span></div>
+        </div>
+      </section>
+
+      <section className="profile" id="about" aria-labelledby="about-heading">
+        <div className="profile-heading">
+          <div>
+            <p className="eyebrow">About</p>
+            <h2 id="about-heading">{profile.name}</h2>
+            <p className="profile-role">{profile.role} · {profile.location}</p>
+          </div>
+          <div className="profile-copy">
+            <p>{profile.introduction}</p>
+            <p>{profile.focus}</p>
+            <div className="profile-links" aria-label="Professional links">
+              {profile.links.map((link) => (
+                <a href={link.href} key={link.label} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noreferrer" : undefined}>
+                  {link.label} ↗
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="profile-body">
+          <div className="experience" aria-labelledby="experience-heading">
+            <p className="eyebrow" id="experience-heading">Experience</p>
+            {profile.experience.map((item) => (
+              <article className="experience-item" key={`${item.company}-${item.period}`}>
+                <div><span>{item.period}</span></div>
+                <div>
+                  <h3>{item.role}</h3>
+                  <p className="company">{item.company}</p>
+                  <p>{item.detail}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <aside className="profile-sidebar">
+            <div>
+              <p className="eyebrow">Core stack</p>
+              <div className="skill-groups">
+                {profile.skills.map((group) => (
+                  <div className="skill-group" key={group.label}>
+                    <h3>{group.label}</h3>
+                    <p>{group.values.join(" · ")}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="education">
+              <p className="eyebrow">Education</p>
+              <h3>{profile.education.degree}</h3>
+              <p>{profile.education.institution}</p>
+              <span>{profile.education.year}</span>
+            </div>
+          </aside>
         </div>
       </section>
 
@@ -72,4 +130,3 @@ export default async function Home() {
     </>
   );
 }
-
