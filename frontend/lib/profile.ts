@@ -7,6 +7,7 @@ export const profile = {
   focus:
     "My recent work spans semantic search with PostgreSQL and pgvector, OCR and local vision-language pipelines, high-throughput APIs, and cloud-hosted products across GCP, AWS, and Cloudflare.",
   links: [
+    { label: "Resume", href: "/Himanshu_Mahajan_Resume.pdf" },
     { label: "Email", href: "mailto:himanshu.mahajan.work@proton.me" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/himanshu-mahajan-8a349099/" },
     { label: "GitHub", href: "https://github.com/vondar" },
@@ -54,4 +55,3 @@ export const profile = {
     year: "2024",
   },
 } as const;
-

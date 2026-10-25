@@ -38,11 +38,14 @@ export default async function Home() {
             <p>{profile.introduction}</p>
             <p>{profile.focus}</p>
             <div className="profile-links" aria-label="Professional links">
-              {profile.links.map((link) => (
-                <a href={link.href} key={link.label} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noreferrer" : undefined}>
-                  {link.label} ↗
-                </a>
-              ))}
+              {profile.links.map((link) => {
+                const opensNewTab = link.href.startsWith("http") || link.href.endsWith(".pdf");
+                return (
+                  <a href={link.href} key={link.label} target={opensNewTab ? "_blank" : undefined} rel={opensNewTab ? "noreferrer" : undefined}>
+                    {link.label} ↗
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>
