@@ -4,3 +4,8 @@ __pycache__/
 .daily-docs/
 .streamlit/secrets.toml
 *.log
+backend/db.sqlite3
+frontend/.next/
+frontend/node_modules/
+frontend/.env*.local
+*.tsbuildinfo

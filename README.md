@@ -1,35 +1,76 @@
-# Data Story Portfolio
+# Signals & Systems — Data Story Portfolio
 
-A self-contained Streamlit portfolio for four data projects:
+A self-contained, three-service portfolio for four data projects:
 
 - CricAudit — forensic Test cricket reconstruction
 - F2P Games — monetization and consumer-risk analysis
 - Attention Deficit — Netflix attention lifecycle modeling
 - Nostalgia — Billboard/YouTube archive verification
 
-All dashboard datasets are versioned inside `data/`, so this folder can be cloned and run without the original source repositories. See [`data/README.md`](data/README.md) for provenance and scope.
+The Next.js frontend presents the work, Django serves the project catalog and summary API, and Streamlit powers the embedded interactive dashboards. All datasets are versioned inside `data/`, so this repository runs without the original source projects. See [`data/README.md`](data/README.md) for provenance and scope.
 
-## Run
+## Install
 
 ```powershell
 git clone <repository-url>
 cd portfolio
 uv sync
-uv run streamlit run app.py
+cd frontend
+npm install
 ```
 
-Install [`uv`](https://docs.astral.sh/uv/getting-started/installation/) first if needed. The project requires Python 3.12 or newer; `uv sync` creates the virtual environment and installs the locked dependencies.
+Install [`uv`](https://docs.astral.sh/uv/getting-started/installation/) first if needed. The project requires Python 3.12+ and Node.js 20.9+.
+
+## Run locally
+
+Open three terminals from the repository root:
+
+```powershell
+# Terminal 1 — Django API
+uv run python backend/manage.py runserver 8000
+
+# Terminal 2 — Streamlit dashboards
+uv run streamlit run app.py --server.port 8501
+
+# Terminal 3 — Next.js frontend
+cd frontend
+npm run dev
+```
+
+Then open `http://localhost:3000`. Each project route embeds its Streamlit dashboard from port 8501. Copy `frontend/.env.example` to `frontend/.env.local` when service URLs differ.
+
+## Services
+
+| Service | Default URL | Responsibility |
+| --- | --- | --- |
+| Next.js | `http://localhost:3000` | Portfolio UI and project routes |
+| Django | `http://localhost:8000/api/` | Project catalog, metrics, and health API |
+| Streamlit | `http://localhost:8501` | Interactive Plotly dashboards |
+
+Django endpoints:
+
+- `GET /api/health/`
+- `GET /api/projects/`
+- `GET /api/projects/<slug>/`
 
 ## Repository layout
 
 ```text
 portfolio/
 ├── .streamlit/config.toml
+├── backend/
+│   ├── api/
+│   ├── config/
+│   └── manage.py
 ├── data/
 │   ├── attention/
 │   ├── cricaudit/
 │   ├── f2p/
 │   └── nostalgia/
+├── frontend/
+│   ├── app/
+│   ├── lib/
+│   └── package.json
 ├── app.py
 ├── pyproject.toml
 ├── uv.lock

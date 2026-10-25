@@ -422,10 +422,6 @@ def render_nostalgia() -> None:
     st.caption("This view uses the repository's verification dry-run dataset. The full Billboard SQLite archive is not present in the checked-out project, so chart-history views are intentionally not fabricated.")
 
 
-load_css()
-
-st.sidebar.markdown("## Signals & Systems")
-st.sidebar.caption("A data product portfolio")
 PAGES = {
     "Overview": render_home,
     "CricAudit": render_cricket,
@@ -433,9 +429,21 @@ PAGES = {
     "Attention Deficit": render_attention,
     "Nostalgia": render_nostalgia,
 }
-page = st.sidebar.radio("Explore", list(PAGES), label_visibility="collapsed")
-st.sidebar.markdown("---")
-st.sidebar.caption("Self-contained data snapshot · No external project paths")
-PAGES[page]()
+
+load_css()
+
+requested_page = st.query_params.get("view", "Overview")
+embedded = str(st.query_params.get("portfolio_embed", "false")).lower() in {"1", "true", "yes"}
+
+if embedded:
+    PAGES.get(requested_page, render_home)()
+else:
+    st.sidebar.markdown("## Signals & Systems")
+    st.sidebar.caption("A data product portfolio")
+    default_index = list(PAGES).index(requested_page) if requested_page in PAGES else 0
+    page = st.sidebar.radio("Explore", list(PAGES), index=default_index, label_visibility="collapsed")
+    st.sidebar.markdown("---")
+    st.sidebar.caption("Self-contained data snapshot · No external project paths")
+    PAGES[page]()
 
 st.markdown('<div class="footer-note">Designed as one portfolio, powered by four independent analytical systems.</div>', unsafe_allow_html=True)
