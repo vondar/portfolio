@@ -447,6 +447,10 @@ nav a:hover, nav a:focus-visible { color: var(--ink); }
 .frame-bar span { margin-left: 0.6rem; }
 .frame-shell iframe { display: block; width: 100%; min-height: 900px; border: 0; background: #0b0d0f; }
 .frame-note { margin: 0.8rem 0 0; font-size: 0.78rem; }
+.dashboard-unavailable { min-height: 360px; display: grid; align-content: center; justify-items: start; padding: clamp(2rem, 6vw, 5rem); border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.dashboard-unavailable h3 { margin: 0; font-size: clamp(1.8rem, 4vw, 3.5rem); letter-spacing: -0.04em; }
+.dashboard-unavailable > p:last-child { max-width: 700px; color: var(--muted); line-height: 1.6; }
+.dashboard-unavailable code { color: var(--gold); font-family: var(--font-mono); }
 
 .empty-state { min-height: 70vh; display: grid; align-content: center; justify-items: start; }
 .empty-state h1 { max-width: 800px; font-size: clamp(3rem, 7vw, 7rem); }

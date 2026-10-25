@@ -3,11 +3,9 @@ import { getProjects } from "@/lib/projects";
 import { profile } from "@/lib/profile";
 
 
-export const revalidate = 300;
-
-
 export default async function Home() {
   const projects = await getProjects();
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
   return (
     <>
@@ -46,8 +44,9 @@ export default async function Home() {
             <div className="profile-links" aria-label="Professional links">
               {profile.links.map((link) => {
                 const opensNewTab = link.href.startsWith("http") || link.href.endsWith(".pdf");
+                const href = link.href.startsWith("/") ? `${basePath}${link.href}` : link.href;
                 return (
-                  <a href={link.href} key={link.label} target={opensNewTab ? "_blank" : undefined} rel={opensNewTab ? "noreferrer" : undefined}>
+                  <a href={href} key={link.label} target={opensNewTab ? "_blank" : undefined} rel={opensNewTab ? "noreferrer" : undefined}>
                     {link.label} ↗
                   </a>
                 );

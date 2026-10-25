@@ -70,11 +70,14 @@ export const fallbackProjects: Project[] = [
   },
 ];
 
-const apiBase = process.env.DJANGO_API_URL ?? "http://127.0.0.1:8000/api";
+const configuredApiBase = process.env.DJANGO_API_URL;
+const apiBase = configuredApiBase || "http://127.0.0.1:8000/api";
+const useBundledCatalog = process.env.STATIC_EXPORT === "true" && !configuredApiBase;
 
 export async function getProjects(): Promise<Project[]> {
+  if (useBundledCatalog) return fallbackProjects;
   try {
-    const response = await fetch(`${apiBase}/projects/`, { next: { revalidate: 300 } });
+    const response = await fetch(`${apiBase}/projects/`, { cache: "force-cache", signal: AbortSignal.timeout(3000) });
     if (!response.ok) throw new Error(`Django API returned ${response.status}`);
     const payload = (await response.json()) as { projects: Project[] };
     return payload.projects;
@@ -84,8 +87,9 @@ export async function getProjects(): Promise<Project[]> {
 }
 
 export async function getProject(slug: string): Promise<Project | undefined> {
+  if (useBundledCatalog) return fallbackProjects.find((project) => project.slug === slug);
   try {
-    const response = await fetch(`${apiBase}/projects/${slug}/`, { next: { revalidate: 300 } });
+    const response = await fetch(`${apiBase}/projects/${slug}/`, { cache: "force-cache", signal: AbortSignal.timeout(3000) });
     if (!response.ok) return fallbackProjects.find((project) => project.slug === slug);
     return (await response.json()) as Project;
   } catch {
@@ -93,8 +97,11 @@ export async function getProject(slug: string): Promise<Project | undefined> {
   }
 }
 
-export function dashboardUrl(view: string): string {
-  const url = new URL(process.env.STREAMLIT_PUBLIC_URL ?? "http://127.0.0.1:8501");
+export function dashboardUrl(view: string): string | null {
+  const configuredUrl = process.env.STREAMLIT_PUBLIC_URL;
+  if (process.env.STATIC_EXPORT === "true" && !configuredUrl) return null;
+
+  const url = new URL(configuredUrl || "http://127.0.0.1:8501");
   url.searchParams.set("view", view);
   url.searchParams.set("embed", "true");
   url.searchParams.set("portfolio_embed", "true");

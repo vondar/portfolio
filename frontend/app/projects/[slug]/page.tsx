@@ -51,18 +51,28 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <p className="eyebrow">Live analysis</p>
             <h2 id="dashboard-title">Interactive dashboard</h2>
           </div>
-          <a href={source} target="_blank" rel="noreferrer">Open full screen ↗</a>
+          {source ? <a href={source} target="_blank" rel="noreferrer">Open full screen ↗</a> : null}
         </div>
-        <div className="frame-shell">
-          <div className="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>analytics / {project.slug}</span></div>
-          <iframe
-            src={source}
-            title={`${project.title} interactive dashboard`}
-            loading="eager"
-            sandbox="allow-downloads allow-forms allow-popups allow-same-origin allow-scripts"
-          />
-        </div>
-        <p className="frame-note">The dashboard is served by Streamlit and embedded here without its navigation chrome.</p>
+        {source ? (
+          <>
+            <div className="frame-shell">
+              <div className="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>analytics / {project.slug}</span></div>
+              <iframe
+                src={source}
+                title={`${project.title} interactive dashboard`}
+                loading="eager"
+                sandbox="allow-downloads allow-forms allow-popups allow-same-origin allow-scripts"
+              />
+            </div>
+            <p className="frame-note">The dashboard is served by Streamlit and embedded here without its navigation chrome.</p>
+          </>
+        ) : (
+          <div className="dashboard-unavailable">
+            <p className="eyebrow">Static portfolio mode</p>
+            <h3>Interactive service not connected.</h3>
+            <p>The project evidence remains available in the homepage workbench. Set the repository variable <code>STREAMLIT_PUBLIC_URL</code> after hosting Streamlit to enable this live iframe.</p>
+          </div>
+        )}
       </section>
     </article>
   );

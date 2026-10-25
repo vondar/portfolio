@@ -56,6 +56,31 @@ Available npm scripts:
 | `npm run build` | Create an optimized production build |
 | `npm run start` | Serve the completed production build |
 
+## Deploy the frontend to GitHub Pages
+
+The repository includes [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml). Every push to `main` builds a static Next.js export and publishes `frontend/out` to:
+
+```text
+https://vondar.github.io/portfolio/
+```
+
+One-time GitHub setup:
+
+1. Push this repository to `https://github.com/vondar/portfolio`.
+2. Open **Settings → Pages** in GitHub.
+3. Under **Build and deployment**, select **GitHub Actions** as the source.
+4. Push to `main`, or run **Deploy frontend to GitHub Pages** manually from the Actions tab.
+
+GitHub Pages only serves static files; it cannot run Django or Streamlit. The portfolio and its lightweight proof artifacts work without those services. To enable the live API link and dashboard iframes, host the Python services separately and add these GitHub repository variables under **Settings → Secrets and variables → Actions → Variables**:
+
+| Variable | Example | Required |
+| --- | --- | --- |
+| `STREAMLIT_PUBLIC_URL` | `https://your-dashboard.streamlit.app` | Only for live dashboard iframes |
+| `DJANGO_PUBLIC_URL` | `https://api.example.com/api/projects/` | Only for the header API link |
+| `DJANGO_API_URL` | `https://api.example.com/api` | Optional build-time project metadata |
+
+The hosted services must allow HTTPS browser access. Streamlit must also permit embedding from the GitHub Pages origin.
+
 ## Run locally
 
 Open three terminals from the repository root:

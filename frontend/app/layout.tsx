@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
-  const apiUrl = process.env.DJANGO_PUBLIC_URL ?? "http://127.0.0.1:8000/api/projects/";
+  const apiUrl = process.env.DJANGO_PUBLIC_URL || (process.env.STATIC_EXPORT === "true" ? null : "http://127.0.0.1:8000/api/projects/");
   return (
     <html lang="en">
       <body>
@@ -28,7 +28,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
           <nav aria-label="Primary navigation">
             <Link href="/#about">About</Link>
             <Link href="/#work">Work</Link>
-            <a href={apiUrl}>API</a>
+            {apiUrl ? <a href={apiUrl}>API</a> : null}
           </nav>
         </header>
         <main id="content">{children}</main>
