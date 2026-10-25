@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import { TelemetryCard } from "@/components/telemetry-card";
 import { getProjects } from "@/lib/projects";
 import { profile } from "@/lib/profile";
 
@@ -20,11 +19,19 @@ export default async function Home() {
             I&apos;m a fullstack engineer working across Python, React, and data systems. These are four investigations into what scores, spending, rankings, and songs reveal when the underlying data is made legible.
           </p>
         </div>
-        <div className="hero-index" aria-label="Portfolio summary">
-          <div><strong>04</strong><span>Projects</span></div>
-          <div><strong>28.3 MB</strong><span>Source data</span></div>
-          <div><strong>03</strong><span>Services</span></div>
-        </div>
+        <aside className="system-monitor" aria-label="Portfolio system telemetry">
+          <div className="monitor-header">
+            <span>SYS.00 / Portfolio</span>
+            <span className="monitor-state"><i aria-hidden="true" />Live</span>
+          </div>
+          <dl>
+            <div><dt>Projects</dt><dd>04</dd></div>
+            <div><dt>Source</dt><dd>28.3 MB</dd></div>
+            <div><dt>Ingest</dt><dd>OK</dd></div>
+            <div><dt>Services</dt><dd>03</dd></div>
+          </dl>
+          <div className="monitor-scan" aria-hidden="true"><span /></div>
+        </aside>
       </section>
 
       <section className="profile" id="about" aria-labelledby="about-heading">
@@ -94,41 +101,33 @@ export default async function Home() {
         </div>
         <div className="project-grid">
           {projects.map((project, index) => (
-            <Link className="project-card" data-accent={project.accent} href={`/projects/${project.slug}`} key={project.slug}>
-              <div className="card-topline">
-                <span>0{index + 1}</span>
-                <span>{project.eyebrow}</span>
-              </div>
-              <div>
-                <h2>{project.title}</h2>
-                <p>{project.summary}</p>
-              </div>
-              <div className="metric-row">
-                {project.metrics.slice(0, 2).map((metric) => (
-                  <div key={metric.label}>
-                    <strong>{metric.value}</strong>
-                    <span>{metric.label}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="card-footer">
-                <div className="tag-list">
-                  {project.tags.map((tag) => <span key={tag}>{tag}</span>)}
-                </div>
-                <span className="arrow" aria-hidden="true">↗</span>
-              </div>
-            </Link>
+            <TelemetryCard index={index} key={project.slug} project={project} />
           ))}
         </div>
       </section>
 
-      <section className="architecture">
-        <p className="eyebrow">Built in layers</p>
-        <div className="architecture-grid">
-          <div><span>01</span><h3>Next.js</h3><p>Editorial frontend and project navigation.</p></div>
-          <div><span>02</span><h3>Django</h3><p>Typed project catalog and data summaries.</p></div>
-          <div><span>03</span><h3>Streamlit</h3><p>Interactive analytics embedded per project.</p></div>
+      <section className="architecture" aria-labelledby="architecture-heading">
+        <div className="section-heading">
+          <div><p className="eyebrow">Built in layers</p><h2 id="architecture-heading">One signal path. Three computational strata.</h2></div>
+          <p>Data moves upward. Intent moves down.</p>
         </div>
+        <ol className="stack-diagram">
+          <li>
+            <span className="layer-index">L03</span>
+            <div><p>Presentation layer</p><h3>Next.js</h3><span>Editorial interface · routing · composition</span></div>
+            <strong>VIEW</strong>
+          </li>
+          <li>
+            <span className="layer-index">L02</span>
+            <div><p>Application and aggregation engine</p><h3>Django</h3><span>Catalog API · computed summaries · boundaries</span></div>
+            <strong>API</strong>
+          </li>
+          <li>
+            <span className="layer-index">L01</span>
+            <div><p>Exploratory analytics workbench</p><h3>Streamlit</h3><span>Plotly views · filters · forensic inspection</span></div>
+            <strong>DATA</strong>
+          </li>
+        </ol>
       </section>
     </>
   );
