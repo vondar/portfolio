@@ -21,6 +21,41 @@ npm install
 
 Install [`uv`](https://docs.astral.sh/uv/getting-started/installation/) first if needed. The project requires Python 3.12+ and Node.js 20.9+.
 
+## Frontend with npm
+
+Run all frontend commands from the `frontend/` directory:
+
+```powershell
+cd frontend
+
+# Install the locked Next.js dependencies
+npm install
+
+# Create a local environment file when service URLs need changing
+Copy-Item .env.example .env.local
+
+# Start the frontend development server at http://localhost:3000
+npm run dev
+```
+
+For a production build:
+
+```powershell
+cd frontend
+npm run typecheck
+npm run build
+npm run start
+```
+
+Available npm scripts:
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the Next.js development server |
+| `npm run typecheck` | Validate TypeScript without generating files |
+| `npm run build` | Create an optimized production build |
+| `npm run start` | Serve the completed production build |
+
 ## Run locally
 
 Open three terminals from the repository root:
