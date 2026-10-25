@@ -74,6 +74,25 @@ npm run dev
 
 Then open `http://localhost:3000`. Each project route embeds its Streamlit dashboard from port 8501. Copy `frontend/.env.example` to `frontend/.env.local` when service URLs differ.
 
+## Troubleshooting
+
+### `uv run app.py` prints `missing ScriptRunContext`
+
+Do not launch the dashboard as a plain Python script:
+
+```powershell
+# Incorrect — no Streamlit server or session is created
+uv run app.py
+```
+
+Launch it through the Streamlit CLI instead:
+
+```powershell
+uv run streamlit run app.py --server.port 8501
+```
+
+The dashboard should then be available at `http://localhost:8501`. Keep that process running while using the Next.js frontend because the project pages load it inside their iframes.
+
 ## Services
 
 | Service | Default URL | Responsibility |
