@@ -45,7 +45,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </div>
       </header>
 
-      <section className="dashboard-section" aria-labelledby="dashboard-title">
+      <section className="dashboard-section" id="dashboard" aria-labelledby="dashboard-title">
         <div className="dashboard-heading">
           <div>
             <p className="eyebrow">Live analysis</p>
@@ -67,4 +67,3 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     </article>
   );
 }
-

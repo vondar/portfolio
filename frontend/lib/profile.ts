@@ -33,6 +33,7 @@ export const profile = {
       period: "Apr 2026 — Present",
       detail:
         "Building an AI-assisted question bank, semantic retrieval with pgvector, OCR and local VLM ingestion, and production learning platforms across Flask, Firebase, Next.js, and Cloudflare.",
+      artifact: "VLM ingestion pipeline",
     },
     {
       role: "Software Engineer",
@@ -40,6 +41,7 @@ export const profile = {
       period: "Apr 2025 — Dec 2025",
       detail:
         "Designed Python SDKs and high-throughput APIs, improved developer onboarding with OpenAPI specifications, and engineered PostgreSQL data models, backups, and recovery workflows.",
+      artifact: "Concurrent data SDK",
     },
     {
       role: "Software Engineering Intern",
@@ -47,6 +49,7 @@ export const profile = {
       period: "Aug 2024 — Mar 2025",
       detail:
         "Migrated legacy business intelligence workflows to Apache Superset and built ETL pipelines and React dashboards with data and design teams.",
+      artifact: "BI migration system",
     },
   ],
   education: {
