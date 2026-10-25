@@ -17,18 +17,6 @@ export default async function Home() {
             I&apos;m a fullstack engineer working across Python, React, and data systems. These are four investigations into what scores, spending, rankings, and songs reveal when the underlying data is made legible.
           </p>
         </div>
-        <aside className="system-monitor system-topology" aria-label="Portfolio system architecture">
-          <div className="monitor-header">
-            <span>SYS.00 / System topology</span>
-            <span className="monitor-state"><i aria-hidden="true" />Live</span>
-          </div>
-          <ol className="topology-flow">
-            <li><span>01 / Preparation</span><strong>Python · Source data</strong></li>
-            <li><span>02 / Delivery</span><strong>Static JSON · GitHub Pages</strong></li>
-            <li><span>03 / Interface</span><strong>Next.js · React</strong></li>
-          </ol>
-          <div className="monitor-scan" aria-hidden="true"><span /></div>
-        </aside>
       </section>
 
       <section className="profile" id="about" aria-labelledby="about-heading">
