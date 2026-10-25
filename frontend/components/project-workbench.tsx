@@ -115,10 +115,31 @@ function Artifact({ slug }: { slug: DossierSlug }) {
 }
 
 
+function ArtifactViewport({ slug, standalone = false }: { slug: DossierSlug; standalone?: boolean }) {
+  const dossier = dossiers[slug];
+  return (
+    <aside className={`artifact-viewport${standalone ? " static-dashboard" : ""}`} id={standalone ? undefined : "artifact-viewport"} aria-live={standalone ? undefined : "polite"} aria-label={`${slug} data artifact`}>
+      <div className="viewport-chrome">
+        <span className="chrome-dot-group" aria-hidden="true"><i /><i /><i /></span>
+        <span className="viewport-title">{dossier.file}</span>
+        <span className="viewport-status">{dossier.status}</span>
+      </div>
+      <div className="viewport-content" key={slug}><Artifact slug={slug} /></div>
+      <div className="artifact-annotation"><span aria-hidden="true">ⓘ</span><span>Snapshot rendered from the repository&apos;s bundled source data.{standalone ? " The homepage workbench lets you inspect every system." : " Open the dashboard for filters and full analysis."}</span></div>
+    </aside>
+  );
+}
+
+
+export function StaticProjectArtifact({ slug }: { slug: string }) {
+  if (!(slug in dossiers)) return null;
+  return <ArtifactViewport slug={slug as DossierSlug} standalone />;
+}
+
+
 export function ProjectWorkbench({ projects }: { projects: Project[] }) {
   const available = projects.filter((project): project is Project & { slug: DossierSlug } => project.slug in dossiers);
   const [activeSlug, setActiveSlug] = useState<DossierSlug>(available[0]?.slug ?? "cricaudit");
-  const active = dossiers[activeSlug];
 
   return (
     <section className="work portfolio-workbench" id="work" aria-labelledby="workbench-heading">
@@ -146,15 +167,7 @@ export function ProjectWorkbench({ projects }: { projects: Project[] }) {
             );
           })}
         </div>
-        <aside className="artifact-viewport" id="artifact-viewport" aria-live="polite" aria-label={`${activeSlug} data artifact`}>
-          <div className="viewport-chrome">
-            <span className="chrome-dot-group" aria-hidden="true"><i /><i /><i /></span>
-            <span className="viewport-title">{active.file}</span>
-            <span className="viewport-status">{active.status}</span>
-          </div>
-          <div className="viewport-content" key={activeSlug}><Artifact slug={activeSlug} /></div>
-          <div className="artifact-annotation"><span aria-hidden="true">ⓘ</span><span>Snapshot rendered from the repository&apos;s bundled source data. Open the dashboard for filters and full analysis.</span></div>
-        </aside>
+        <ArtifactViewport slug={activeSlug} />
       </div>
     </section>
   );

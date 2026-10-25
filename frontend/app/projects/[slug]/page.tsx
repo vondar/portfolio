@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { StaticProjectArtifact } from "@/components/project-workbench";
 import { dashboardUrl, fallbackProjects, getProject } from "@/lib/projects";
 
 
@@ -48,8 +49,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <section className="dashboard-section" id="dashboard" aria-labelledby="dashboard-title">
         <div className="dashboard-heading">
           <div>
-            <p className="eyebrow">Live analysis</p>
-            <h2 id="dashboard-title">Interactive dashboard</h2>
+            <p className="eyebrow">{source ? "Live analysis" : "Bundled analysis"}</p>
+            <h2 id="dashboard-title">{source ? "Interactive dashboard" : "Dataset artifact"}</h2>
           </div>
           {source ? <a href={source} target="_blank" rel="noreferrer">Open full screen ↗</a> : null}
         </div>
@@ -67,11 +68,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <p className="frame-note">The dashboard is served by Streamlit and embedded here without its navigation chrome.</p>
           </>
         ) : (
-          <div className="dashboard-unavailable">
-            <p className="eyebrow">Static portfolio mode</p>
-            <h3>Interactive service not connected.</h3>
-            <p>The project evidence remains available in the homepage workbench. Set the repository variable <code>STREAMLIT_PUBLIC_URL</code> after hosting Streamlit to enable this live iframe.</p>
-          </div>
+          <StaticProjectArtifact slug={project.slug} />
         )}
       </section>
     </article>
