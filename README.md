@@ -14,11 +14,11 @@ All dashboard datasets are versioned inside `data/`, so this folder can be clone
 ```powershell
 git clone <repository-url>
 cd portfolio
-python -m pip install -r requirements.txt
-python -m streamlit run app.py
+uv sync
+uv run streamlit run app.py
 ```
 
-Python 3.12 or newer is recommended.
+Install [`uv`](https://docs.astral.sh/uv/getting-started/installation/) first if needed. The project requires Python 3.12 or newer; `uv sync` creates the virtual environment and installs the locked dependencies.
 
 ## Repository layout
 
@@ -31,7 +31,7 @@ portfolio/
 │   ├── f2p/
 │   └── nostalgia/
 ├── app.py
-├── requirements.txt
+├── pyproject.toml
+├── uv.lock
 └── styles.css
 ```
-
