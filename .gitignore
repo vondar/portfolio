@@ -10,3 +10,5 @@ frontend/node_modules/
 frontend/.env*.local
 *.tsbuildinfo
 .tmp*
+/Himanshu_Mahajan_Backend_.pdf
+/package-lock.json
