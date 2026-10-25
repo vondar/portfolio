@@ -1,13 +1,13 @@
 # Signals & Systems — Data Story Portfolio
 
-A self-contained, three-service portfolio for four data projects:
+A self-contained portfolio for four data projects:
 
 - CricAudit — forensic Test cricket reconstruction
 - F2P Games — monetization and consumer-risk analysis
 - Attention Deficit — Netflix attention lifecycle modeling
 - Nostalgia — Billboard/YouTube archive verification
 
-The Next.js frontend presents the work, Django serves the project catalog and summary API, and Streamlit powers the embedded interactive dashboards. All datasets are versioned inside `data/`, so this repository runs without the original source projects. See [`data/README.md`](data/README.md) for provenance and scope.
+The Next.js frontend presents the work and renders all four interactive dashboards directly in the browser. A deterministic preparation script converts the source datasets into compact static JSON before deployment. Django remains available as an optional project catalog API, and Streamlit remains as the Python reference dashboard. All datasets are versioned inside `data/`, so this repository runs without the original source projects. See [`data/README.md`](data/README.md) for provenance and scope.
 
 ## Install
 
@@ -31,6 +31,9 @@ cd frontend
 # Install the locked Next.js dependencies
 npm install
 
+# Regenerate browser-ready dashboard data from the bundled sources
+npm run data:build
+
 # Create a local environment file when service URLs need changing
 Copy-Item .env.example .env.local
 
@@ -51,6 +54,7 @@ Available npm scripts:
 
 | Command | Purpose |
 | --- | --- |
+| `npm run data:build` | Regenerate compact dashboard JSON from `data/` |
 | `npm run dev` | Start the Next.js development server |
 | `npm run typecheck` | Validate TypeScript without generating files |
 | `npm run build` | Create an optimized production build |
@@ -71,33 +75,29 @@ One-time GitHub setup:
 3. Under **Build and deployment**, select **GitHub Actions** as the source.
 4. Push to `main`, or run **Deploy frontend to GitHub Pages** manually from the Actions tab.
 
-GitHub Pages only serves static files; it cannot run Django or Streamlit. The portfolio and its lightweight proof artifacts work without those services. To enable the live API link and dashboard iframes, host the Python services separately and add these GitHub repository variables under **Settings → Secrets and variables → Actions → Variables**:
-
-| Variable | Example | Required |
-| --- | --- | --- |
-| `STREAMLIT_PUBLIC_URL` | `https://your-dashboard.streamlit.app` | Only for live dashboard iframes |
-| `DJANGO_PUBLIC_URL` | `https://api.example.com/api/projects/` | Only for the header API link |
-| `DJANGO_API_URL` | `https://api.example.com/api` | Optional build-time project metadata |
-
-The hosted services must allow HTTPS browser access. Streamlit must also permit embedding from the GitHub Pages origin.
+The workflow regenerates all four browser datasets and exports the site as static files. GitHub Pages therefore serves the complete interactive portfolio without Django, Streamlit, repository variables, or iframes.
 
 ## Run locally
 
-Open three terminals from the repository root:
+The complete portfolio, including all four dashboards, needs only the frontend:
 
 ```powershell
-# Terminal 1 — Django API
-uv run python backend/manage.py runserver 8000
-
-# Terminal 2 — Streamlit dashboards
-uv run streamlit run app.py --server.port 8501
-
-# Terminal 3 — Next.js frontend
 cd frontend
+npm run data:build
 npm run dev
 ```
 
-Then open `http://localhost:3000`. Each project route embeds its Streamlit dashboard from port 8501. Copy `frontend/.env.example` to `frontend/.env.local` when service URLs differ.
+Then open `http://localhost:3000`. Filters, charts, tables, searches, and external music links run entirely in the browser.
+
+The Python services are optional during frontend development:
+
+```powershell
+# Optional Django catalog API
+uv run python backend/manage.py runserver 8000
+
+# Optional Streamlit reference implementation
+uv run streamlit run app.py --server.port 8501
+```
 
 ## Troubleshooting
 
@@ -116,15 +116,15 @@ Launch it through the Streamlit CLI instead:
 uv run streamlit run app.py --server.port 8501
 ```
 
-The dashboard should then be available at `http://localhost:8501`. Keep that process running while using the Next.js frontend because the project pages load it inside their iframes.
+The reference dashboard should then be available at `http://localhost:8501`. The Next.js dashboards do not depend on this process.
 
 ## Services
 
 | Service | Default URL | Responsibility |
 | --- | --- | --- |
-| Next.js | `http://localhost:3000` | Portfolio UI and project routes |
-| Django | `http://localhost:8000/api/` | Project catalog, metrics, and health API |
-| Streamlit | `http://localhost:8501` | Interactive Plotly dashboards |
+| Next.js | `http://localhost:3000` | Portfolio UI and browser-native dashboards |
+| Django | `http://localhost:8000/api/` | Optional project catalog, metrics, and health API |
+| Streamlit | `http://localhost:8501` | Optional Python reference dashboards |
 
 Django endpoints:
 
@@ -148,8 +148,11 @@ portfolio/
 │   └── nostalgia/
 ├── frontend/
 │   ├── app/
+│   ├── components/dashboards/
 │   ├── lib/
+│   ├── public/dashboard-data/
 │   └── package.json
+├── scripts/prepare_dashboard_data.py
 ├── app.py
 ├── pyproject.toml
 ├── uv.lock

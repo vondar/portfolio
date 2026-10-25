@@ -34,7 +34,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         <main id="content">{children}</main>
         <footer className="site-footer">
           <span>Four independent analytical systems.</span>
-          <span>Next.js · Django · Streamlit</span>
+          <span>Python ETL · Static JSON · Next.js</span>
         </footer>
       </body>
     </html>

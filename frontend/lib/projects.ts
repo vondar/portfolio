@@ -96,14 +96,3 @@ export async function getProject(slug: string): Promise<Project | undefined> {
     return fallbackProjects.find((project) => project.slug === slug);
   }
 }
-
-export function dashboardUrl(view: string): string | null {
-  const configuredUrl = process.env.STREAMLIT_PUBLIC_URL;
-  if (process.env.STATIC_EXPORT === "true" && !configuredUrl) return null;
-
-  const url = new URL(configuredUrl || "http://127.0.0.1:8501");
-  url.searchParams.set("view", view);
-  url.searchParams.set("embed", "true");
-  url.searchParams.set("portfolio_embed", "true");
-  return url.toString();
-}

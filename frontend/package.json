@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "data:build": "python ../scripts/prepare_dashboard_data.py",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -20,4 +21,3 @@
     "typescript": "latest"
   }
 }
-

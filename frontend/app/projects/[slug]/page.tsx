@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { StaticProjectArtifact } from "@/components/project-workbench";
-import { dashboardUrl, fallbackProjects, getProject } from "@/lib/projects";
+import { NativeDashboard } from "@/components/dashboards/native-dashboard";
+import { fallbackProjects, getProject } from "@/lib/projects";
 
 
 type ProjectPageProps = {
@@ -28,8 +28,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const project = await getProject(slug);
   if (!project) notFound();
 
-  const source = dashboardUrl(project.dashboard_view);
-
   return (
     <article className="project-page">
       <Link className="back-link" href="/">← All projects</Link>
@@ -49,27 +47,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <section className="dashboard-section" id="dashboard" aria-labelledby="dashboard-title">
         <div className="dashboard-heading">
           <div>
-            <p className="eyebrow">{source ? "Live analysis" : "Bundled analysis"}</p>
-            <h2 id="dashboard-title">{source ? "Interactive dashboard" : "Dataset artifact"}</h2>
+            <p className="eyebrow">Browser-native analysis</p>
+            <h2 id="dashboard-title">Interactive dashboard</h2>
           </div>
-          {source ? <a href={source} target="_blank" rel="noreferrer">Open full screen ↗</a> : null}
+          <span className="native-dashboard-label"><i />No server required</span>
         </div>
-        {source ? (
-          <>
-            <div className="frame-shell">
-              <div className="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>analytics / {project.slug}</span></div>
-              <iframe
-                src={source}
-                title={`${project.title} interactive dashboard`}
-                loading="eager"
-                sandbox="allow-downloads allow-forms allow-popups allow-same-origin allow-scripts"
-              />
-            </div>
-            <p className="frame-note">The dashboard is served by Streamlit and embedded here without its navigation chrome.</p>
-          </>
-        ) : (
-          <StaticProjectArtifact slug={project.slug} />
-        )}
+        <NativeDashboard slug={project.slug} />
       </section>
     </article>
   );

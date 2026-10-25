@@ -23,8 +23,8 @@ export default async function Home() {
             <span className="monitor-state"><i aria-hidden="true" />Live</span>
           </div>
           <ol className="topology-flow">
-            <li><span>01 / Ingestion</span><strong>Python · Streamlit</strong></li>
-            <li><span>02 / Core</span><strong>Django · Data API</strong></li>
+            <li><span>01 / Preparation</span><strong>Python · Source data</strong></li>
+            <li><span>02 / Delivery</span><strong>Static JSON · GitHub Pages</strong></li>
             <li><span>03 / Interface</span><strong>Next.js · React</strong></li>
           </ol>
           <div className="monitor-scan" aria-hidden="true"><span /></div>
